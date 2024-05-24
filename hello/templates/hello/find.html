@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>{{title}}</h1>
+    <p>{{message|safe}}</p>
+    <form action="{% url 'find' %}" method = 'post'>
+    <input type="submit" value="click">
+    {% csrf_token %}   
+    {{form.as_p}}
+    </form>
+    <table>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>mail</th>
+        </tr>
+        {% for item in data %}
+        <tr>
+            <th>{{item.id}}</th>
+            <th>{{item.name}}</th>
+            <th>{{item.mail}}</th>
+            <td><a href="{% url 'edit' item.id %}">Edit</td>
+            <td><a href="{% url 'delete' item.id %}">Delete</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

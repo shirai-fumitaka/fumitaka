@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+<body>
+    <h1>{{title}}</h1>
+    <p>{{message|safe}}</p>
+    {{form}}
+    <script> alert("shirai") </script>
+    <input type="submit" value="click">
+    <table>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>mail</th>
+            <th>age</th>
+            <th>birthday</th>
+            <th>message</th>
+        </tr>
+        {% for item in data %}
+        <tr>
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.mail}}</td>
+            <td>{{item.age}}</td>
+            <td>{{item.birthday}}</td>
+            <td><ul>
+                {% for ob in item.message_set.all %}
+                <li>{{ob.title}}</li>
+                {% endfor %}
+            </ul></td>
+            <td><a href="{% url 'edit' item.id %}">Edit</td>
+            <td><a href="{% url 'delete' item.id %}">Delete</td>
+        </tr>        
+        {% endfor %}
+    </table>   
+    <ul class="pagination">
+        {% if data.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="{% url "index" %}">&laquo;First</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="{% url "index" %}{{data.previous_page_number}}">&laquo;prev</a>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link">&laquo;First</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link">&laquo;prev</a>
+        </li>
+        {% endif %}
+        <li class="page-item">
+            <a class="page-link">
+                {{data.number}}/{{data.paginator.num_pages}}</a>
+        </li>
+        {% if data.has_next %}
+        <li class="page-item">
+            <a class="page-link"
+            href="{% url 'index' %}{{data.next_page_number}}">
+            next &laquo;</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link"
+            href="{% url 'index' %}{{data.paginator.num_pages}}">
+            Last &laquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link">next &laquo;</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link">
+                last&laquo;</a>
+        </li>
+        {%endif%}
+    </ul>
+
+    {% comment %} <p>{{result|safe}}</p>
+    <form action="{% url 'index' %}" method="post">
+        {% csrf_token %}
+    <table>
+        {{form.as_p}}
+        <tr><th></th><th>
+            <input type="submit" value="click">
+        </th></tr> {% endcomment %}
+    {% comment %} </table> {% endcomment %}
+    </form>
+    {% comment %} <p><a href="{% url goto %}">{{goto}}</a></p> {% endcomment %}
+</body>
+</html>
